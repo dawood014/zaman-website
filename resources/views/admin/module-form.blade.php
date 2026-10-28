@@ -1,1 +1,86 @@
-@extends('layouts.admin') @section('title',($item->exists?'Edit ':'Add ').$cfg['label']) @section('content')<div class="topbar"><div><div class="kicker">{{ $cfg['label'] }}</div><h1>{{ $item->exists ? 'Edit' : 'Add' }} Item</h1></div></div><div class="card"><div class="card-body"><form method="post" enctype="multipart/form-data" action="{{ $item->exists ? route('admin.module.update',[$module,$item]) : route('admin.module.store',$module) }}">@csrf @if($item->exists) @method('PUT') @endif<div class="form-grid"><div class="field"><label>Title</label><input name="title" value="{{ old('title',$item->title) }}" required></div><div class="field"><label>Slug</label><input name="slug" value="{{ old('slug',$item->slug) }}" placeholder="auto-generated if blank"></div><div class="field"><label>Status</label><select name="status">@foreach(['Published','Active','Available','Ongoing','Completed','Draft','Hidden','Sold','Booked'] as $s)<option @selected(old('status',$item->status)===$s)>{{ $s }}</option>@endforeach</select></div><div class="field"><label>Sort Order</label><input type="number" name="sort_order" value="{{ old('sort_order',$item->sort_order ?? 0) }}"></div>@foreach($cfg['fields'] as $field) @php($val=old('f_'.$field['name'],data_get($item->data,$field['name'])))<div class="field {{ in_array($field['type'],['textarea','image','file'])?'full':'' }}"><label>{{ $field['label'] }}</label>@if(str_starts_with($field['type'],'select:'))<select name="f_{{ $field['name'] }}">@foreach(explode('|',substr($field['type'],7)) as $o)<option @selected($val===$o)>{{ $o }}</option>@endforeach</select>@elseif($field['type']==='textarea')<textarea name="f_{{ $field['name'] }}">{{ $val }}</textarea>@elseif($field['type']==='image') @if($val)<div style="margin-bottom:10px"><img src="{{ str_starts_with($val,'http')?$val:asset($val) }}" style="max-width:220px;max-height:130px;object-fit:cover"></div>@endif<input type="file" name="f_{{ $field['name'] }}" accept="image/*">@elseif($field['type']==='file') @if($val)<p class="help">{{ $val }}</p>@endif<input type="file" name="f_{{ $field['name'] }}">@else<input type="{{ $field['type'] }}" name="f_{{ $field['name'] }}" value="{{ $val }}">@endif</div>@endforeach<div class="field full"><div class="actions"><button class="btn btn-primary">Save</button><a class="btn btn-light" href="{{ route('admin.module.index',$module) }}">Cancel</a></div></div></div></form></div></div>@if($errors->any())<div class="notice show">{{ implode(' • ',$errors->all()) }}</div>@endif@endsection
+@extends('layouts.admin')
+
+@section('title', ($item->exists ? 'Edit ' : 'Add ').$cfg['label'])
+
+@section('content')
+<div class="topbar">
+    <div>
+        <div class="kicker">{{ $cfg['label'] }}</div>
+        <h1>{{ $item->exists ? 'Edit' : 'Add' }} Item</h1>
+    </div>
+</div>
+
+@if($errors->any())
+    <div class="notice show">{{ implode(' • ', $errors->all()) }}</div>
+@endif
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" action="{{ $item->exists ? route('admin.module.update', [$module, $item]) : route('admin.module.store', $module) }}">
+            @csrf
+            @if($item->exists)
+                @method('PUT')
+            @endif
+            <div class="form-grid">
+                <div class="field">
+                    <label>Title</label>
+                    <input name="title" value="{{ old('title', $item->title) }}" required>
+                </div>
+                <div class="field">
+                    <label>Slug</label>
+                    <input name="slug" value="{{ old('slug', $item->slug) }}" placeholder="auto-generated if blank">
+                </div>
+                <div class="field">
+                    <label>Status</label>
+                    <select name="status">
+                        @foreach(['Published', 'Active', 'Available', 'Ongoing', 'Completed', 'Draft', 'Hidden', 'Sold', 'Booked'] as $s)
+                            <option @selected(old('status', $item->status) === $s)>{{ $s }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Sort Order</label>
+                    <input type="number" name="sort_order" value="{{ old('sort_order', $item->sort_order ?? 0) }}">
+                </div>
+
+                @foreach($cfg['fields'] as $field)
+                    @php($val = old('f_'.$field['name'], data_get($item->data, $field['name'])))
+                    <div class="field {{ in_array($field['type'], ['textarea', 'image', 'file'], true) ? 'full' : '' }}">
+                        <label>{{ $field['label'] }}</label>
+                        @if(str_starts_with($field['type'], 'select:'))
+                            <select name="f_{{ $field['name'] }}">
+                                @foreach(explode('|', substr($field['type'], 7)) as $o)
+                                    <option @selected($val === $o)>{{ $o }}</option>
+                                @endforeach
+                            </select>
+                        @elseif($field['type'] === 'textarea')
+                            <textarea name="f_{{ $field['name'] }}">{{ $val }}</textarea>
+                        @elseif($field['type'] === 'image')
+                            @if($val)
+                                <div style="margin-bottom:10px">
+                                    <img src="{{ str_starts_with($val, 'http') ? $val : asset($val) }}" style="max-width:220px;max-height:130px;object-fit:cover" alt="">
+                                </div>
+                            @endif
+                            <input type="file" name="f_{{ $field['name'] }}" accept="image/*">
+                        @elseif($field['type'] === 'file')
+                            @if($val)
+                                <p class="help">{{ $val }}</p>
+                            @endif
+                            <input type="file" name="f_{{ $field['name'] }}">
+                        @else
+                            <input type="{{ $field['type'] }}" name="f_{{ $field['name'] }}" value="{{ $val }}">
+                        @endif
+                    </div>
+                @endforeach
+
+                <div class="field full">
+                    <div class="actions">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                        <a class="btn btn-light" href="{{ route('admin.module.index', $module) }}">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

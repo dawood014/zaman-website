@@ -6,13 +6,14 @@
     <title>@yield('title') | ZBT Admin</title>
     <link rel="stylesheet" href="{{ asset('assets/admin.css') }}">
 </head>
-<body>
+<body class="admin-body">
 @php
     $adminModule = request()->route('module');
-    $navActive = fn ($module) => request()->routeIs('admin.module.*') && $adminModule === $module;
+    $navActive = fn (string $module): bool => request()->routeIs('admin.module.*') && $adminModule === $module;
 @endphp
+<div class="admin-backdrop" data-admin-backdrop aria-hidden="true"></div>
 <div class="admin-layout">
-    <aside class="sidebar">
+    <aside class="sidebar" id="admin-sidebar">
         <div class="brand">
             <img src="{{ asset('assets/logo.png') }}" alt="ZBT">
             <div>
@@ -48,7 +49,7 @@
             <a href="{{ route('admin.module.index', 'faqs') }}" @class(['active' => $navActive('faqs')])>FAQs</a>
 
             <div class="nav-group">Leads</div>
-            <a href="{{ route('admin.inquiries') }}" @class(['active' => request()->routeIs('admin.inquiries*')])>Contact Inquiries</a>
+            <a href="{{ route('admin.inquiries') }}" @class(['active' => request()->routeIs('admin.inquiries*') && request('type') !== 'Property Visit'])>Contact Inquiries</a>
             <a href="{{ route('admin.inquiries', ['type' => 'Property Visit']) }}" @class(['active' => request('type') === 'Property Visit'])>Property Visits</a>
 
             <div class="nav-group">Website</div>
@@ -56,20 +57,27 @@
             <a href="{{ route('admin.settings') }}" @class(['active' => request()->routeIs('admin.settings*')])>Contact & Settings</a>
 
             <div class="nav-group">Account</div>
-            <a href="{{ route('home') }}" target="_blank">Open Website ↗</a>
+            <a href="{{ route('home') }}" target="_blank" rel="noopener">Open Website ↗</a>
             <form method="post" action="{{ route('admin.logout') }}">
                 @csrf
-                <button type="submit" style="background:none;border:0;color:inherit;padding:12px 14px;width:100%;text-align:left;cursor:pointer">Logout</button>
+                <button type="submit" class="nav-logout">Logout</button>
             </form>
         </div>
         <div class="side-foot">Laravel CMS — content and uploads are stored in MySQL and <code>storage/app/public</code>.</div>
     </aside>
-    <main class="main">
-        @if(session('success'))
-            <div class="notice show">{{ session('success') }}</div>
-        @endif
-        @yield('content')
-    </main>
+    <div class="admin-main-wrap">
+        <header class="admin-mobile-bar">
+            <button type="button" class="btn btn-light btn-sm" data-admin-menu-toggle aria-controls="admin-sidebar" aria-expanded="false">☰ Menu</button>
+            <strong>ZBT Admin</strong>
+        </header>
+        <main class="main">
+            @if(session('success'))
+                <div class="notice show">{{ session('success') }}</div>
+            @endif
+            @yield('content')
+        </main>
+    </div>
 </div>
+<script src="{{ asset('assets/admin.js') }}"></script>
 </body>
 </html>
