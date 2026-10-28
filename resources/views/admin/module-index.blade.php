@@ -18,7 +18,15 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Title</th>
+                    @if($module === 'achievements')
+                        <th>Label</th>
+                        <th>Value</th>
+                    @elseif($module === 'why-choose')
+                        <th>Reason Title</th>
+                        <th>Icon</th>
+                    @else
+                        <th>Title</th>
+                    @endif
                     <th>Status</th>
                     <th>Order</th>
                     <th>Updated</th>
@@ -29,9 +37,22 @@
                 @forelse($items as $item)
                     <tr>
                         <td>
-                            <strong>{{ $item->title }}</strong><br>
-                            <small>{{ $item->slug }}</small>
+                            @if($module === 'achievements')
+                                <strong>{{ $item->value('label', $item->title) }}</strong><br>
+                                <small>{{ $item->slug }}</small>
+                            @elseif($module === 'why-choose')
+                                <strong>{{ $item->title ?: '—' }}</strong><br>
+                                <small>{{ $item->slug }}</small>
+                            @else
+                                <strong>{{ $item->title }}</strong><br>
+                                <small>{{ $item->slug }}</small>
+                            @endif
                         </td>
+                        @if($module === 'achievements')
+                            <td>{{ $item->value('value', '—') }}</td>
+                        @elseif($module === 'why-choose')
+                            <td>{{ $item->value('icon', '—') }}</td>
+                        @endif
                         <td><span class="badge green">{{ $item->status }}</span></td>
                         <td>{{ $item->sort_order }}</td>
                         <td>{{ $item->updated_at->format('d M Y') }}</td>
@@ -47,7 +68,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="5">No records yet.</td></tr>
+                    <tr><td colspan="{{ in_array($module, ['achievements', 'why-choose'], true) ? 6 : 5 }}">No records yet.</td></tr>
                 @endforelse
             </tbody>
         </table>

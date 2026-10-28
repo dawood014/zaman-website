@@ -11,7 +11,11 @@
 </div>
 
 @if($errors->any())
-    <div class="notice show">{{ implode(' • ', $errors->all()) }}</div>
+    <div class="notice show" style="background:#fff0ee;color:#b42318">{{ implode(' • ', $errors->all()) }}</div>
+@endif
+
+@if($module === 'achievements')
+    <p class="help" style="margin:-8px 0 18px">Homepage statistics use <strong>Value</strong> and <strong>Label</strong>. Set status to <strong>Published</strong> (or Active) so they appear on the website.</p>
 @endif
 
 <div class="card">
@@ -23,8 +27,16 @@
             @endif
             <div class="form-grid">
                 <div class="field">
-                    <label>Title</label>
-                    <input name="title" value="{{ old('title', $item->title) }}" required>
+                    <label>
+                        @if($module === 'why-choose')
+                            Reason Title
+                        @elseif($module === 'achievements')
+                            Admin Title <span class="help">(optional — label is shown on site)</span>
+                        @else
+                            Title
+                        @endif
+                    </label>
+                    <input name="title" value="{{ old('title', $item->title) }}" @unless($module === 'achievements') required @endunless>
                 </div>
                 <div class="field">
                     <label>Slug</label>

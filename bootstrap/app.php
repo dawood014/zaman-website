@@ -22,6 +22,13 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->to('/admin/login')
                     ->withErrors(['email' => 'Your session expired. Please sign in again.']);
             }
+
+            if ($request->is('admin', 'admin/*')) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors(['_token' => 'Your session expired. Refresh the page and try saving again.']);
+            }
         });
     })
     ->create();
