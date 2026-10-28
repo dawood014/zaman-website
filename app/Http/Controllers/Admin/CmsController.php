@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContentItem;
+use App\Support\PublicStorage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -86,9 +87,12 @@ class CmsController extends Controller
             if (str_starts_with($field['type'], 'image') || $field['type'] === 'file') {
                 if ($request->hasFile($key)) {
                     if (! empty($data[$field['name']]) && str_starts_with($data[$field['name']], 'storage/')) {
-                        Storage::disk('public')->delete(substr($data[$field['name']], 8));
+                        $old = substr($data[$field['name']], 8);
+                        Storage::disk('public')->delete($old);
+                        PublicStorage::unpublish($old);
                     }
                     $path = $request->file($key)->store('cms/'.$module, 'public');
+                    PublicStorage::publish($path);
                     $data[$field['name']] = 'storage/'.$path;
                 }
             } else {
@@ -129,7 +133,9 @@ class CmsController extends Controller
 
         foreach ((array) $item->data as $value) {
             if (is_string($value) && str_starts_with($value, 'storage/')) {
-                Storage::disk('public')->delete(substr($value, 8));
+                $relative = substr($value, 8);
+                Storage::disk('public')->delete($relative);
+                PublicStorage::unpublish($relative);
             }
         }
 
