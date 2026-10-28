@@ -1,0 +1,3 @@
+<?php
+namespace App\Http\Controllers\Admin; use App\Http\Controllers\Controller; use App\Models\Setting; use Illuminate\Http\Request;
+class SettingsController extends Controller { public function edit(){return view('admin.settings',['settings'=>Setting::pluck('value','key')]);} public function update(Request $r){$data=$r->validate(['company'=>'required|string|max:255','tagline'=>'nullable|string|max:255','address'=>'nullable|string|max:500','email'=>'nullable|email|max:255','phone'=>'nullable|string|max:100','whatsapp'=>'nullable|string|max:100','map_url'=>'nullable|string|max:2000','working_hours'=>'nullable|string|max:500']);foreach($data as $k=>$v)Setting::updateOrCreate(['key'=>$k],['value'=>$v]);return back()->with('success','Settings updated.');} }
