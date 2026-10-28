@@ -2,8 +2,9 @@
 @section('title', 'Home | Zaman Build Tech & Real Estate')
 @section('content')
 <section class="hero-video">
+    @php($heroMedia = cms_media($hero?->value('media_upload', $hero?->value('media'))))
     <video autoplay muted loop playsinline poster="{{ cms_media($hero?->value('poster')) }}">
-        <source src="{{ $hero?->value('media') }}" type="video/webm">
+        <source src="{{ $heroMedia }}" type="video/webm">
     </video>
     <div class="container inner">
         <div class="reveal">
@@ -11,8 +12,12 @@
             <h1>{!! $hero?->value('heading', 'Build with confidence.<br><em>Invest with clarity.</em>') !!}</h1>
             <p>{{ $hero?->value('subheading', 'Construction, renovation, ready-made houses and residential plots in Peshawar — with selected property options available on cash and installment plans.') }}</p>
             <div class="hero-actions">
-                <a class="btn btn-orange" href="{{ route('projects') }}">Explore Projects →</a>
-                <a class="btn btn-outline" href="{{ route('properties') }}">View Properties</a>
+                <a class="btn btn-orange" href="{{ $hero?->value('link', route('projects.index')) }}">{{ $hero?->value('cta', 'Explore Projects →') }}</a>
+                @if($hero?->value('link_secondary') || $hero?->value('cta_secondary'))
+                    <a class="btn btn-outline" href="{{ $hero?->value('link_secondary', route('properties.index')) }}">{{ $hero?->value('cta_secondary', 'View Properties') }}</a>
+                @else
+                    <a class="btn btn-outline" href="{{ route('properties.index') }}">View Properties</a>
+                @endif
             </div>
         </div>
         <div class="hero-note reveal">
@@ -97,7 +102,7 @@
     <div class="container">
         <div class="section-head">
             <div><div class="eyebrow">Featured Projects</div><h2>Professional project presentation with progress, location and property links.</h2></div>
-            <a class="btn btn-outline" href="{{ route('projects') }}">All Projects</a>
+            <a class="btn btn-outline" href="{{ route('projects.index') }}">All Projects</a>
         </div>
         <div class="project-grid">
             @foreach($projects->take(3) as $x)
@@ -119,7 +124,7 @@
     <div class="container">
         <div class="section-head">
             <div><div class="eyebrow">Featured Properties</div><h2>Ready houses and plots presented with clear details.</h2></div>
-            <a class="btn btn-outline" href="{{ route('properties') }}">Browse All</a>
+            <a class="btn btn-outline" href="{{ route('properties.index') }}">Browse All</a>
         </div>
         <div class="property-grid" data-property-grid>
             @foreach($properties as $x)
@@ -212,7 +217,7 @@
     <div class="container">
         <div class="section-head">
             <div><div class="eyebrow">Latest Insights</div><h2>Construction news, property guidance and updates.</h2></div>
-            <a class="btn btn-outline" href="{{ route('news') }}">View All News</a>
+            <a class="btn btn-outline" href="{{ route('news.index') }}">View All News</a>
         </div>
         <div class="news-grid">
             @foreach($news as $x)

@@ -4,7 +4,7 @@
 @php
     $features = $item->value('features');
     if (! is_array($features)) {
-        $features = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', (string) $item->value('details', ''))));
+        $features = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', (string) $features)));
     }
 @endphp
 <section class="page-hero">

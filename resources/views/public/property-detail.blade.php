@@ -3,7 +3,7 @@
 @section('content')
 <section class="page-hero">
     <div class="container">
-        <div class="breadcrumbs"><a href="{{ route('home') }}">Home</a><span>›</span><a href="{{ route('properties') }}">Properties</a><span>›</span><span>{{ $item->title }}</span></div>
+        <div class="breadcrumbs"><a href="{{ route('home') }}">Home</a><span>›</span><a href="{{ route('properties.index') }}">Properties</a><span>›</span><span>{{ $item->title }}</span></div>
         <h1>{{ $item->title }}</h1>
         <p class="lead" style="color:#ddd;margin-top:15px">{{ $item->value('location') }}</p>
     </div>
@@ -24,9 +24,25 @@
                 <p class="lead">{{ $item->value('description') }}</p>
                 <h3>Amenities</h3>
                 <p>{{ $item->value('amenities', 'Contact us for full specifications.') }}</p>
+                <div class="spec-grid" style="margin-top:20px">
+                    <div class="spec"><small>Area</small><strong>{{ $item->value('area') }}</strong></div>
+                    <div class="spec"><small>Status</small><strong>{{ $item->value('property_status', $item->status) }}</strong></div>
+                    <div class="spec"><small>Bedrooms</small><strong>{{ $item->value('beds') }}</strong></div>
+                    <div class="spec"><small>Payment</small><strong>{{ $item->value('payment') }}</strong></div>
+                    <div class="spec"><small>Price</small><strong>{{ $item->value('price', 'Contact for Price') }}</strong></div>
+                    <div class="spec"><small>Project</small><strong>{{ $item->value('project') }}</strong></div>
+                </div>
                 <div class="property-actions" style="margin-top:18px">
                     <a class="btn btn-orange" href="#visit">Schedule Visit</a>
-                    @if($item->value('floor_plan'))<a class="btn btn-outline" href="{{ $item->value('floor_plan') }}" target="_blank">Floor Plan</a>@endif
+                    <button type="button" class="btn btn-outline" data-property-whatsapp
+                        data-title="{{ $item->title }}"
+                        data-url="{{ route('properties.show', $item->slug) }}"
+                        data-ref="{{ $item->value('reference', $item->slug) }}"
+                        data-price="{{ $item->value('price') }}">WhatsApp Enquiry</button>
+                    <button type="button" class="btn btn-outline" onclick="navigator.clipboard?.writeText('{{ route('properties.show', $item->slug) }}').then(()=>alert('Property link copied.'))">Share Property</button>
+                    @if($item->value('floor_plan') || $item->value('floor_plan_file'))
+                        <a class="btn btn-outline" href="{{ cms_media($item->value('floor_plan_file', $item->value('floor_plan'))) }}" target="_blank">Floor Plan</a>
+                    @endif
                     @if($item->value('virtual_tour'))<a class="btn btn-outline" href="{{ $item->value('virtual_tour') }}" target="_blank">3D Tour</a>@endif
                 </div>
             </div>
@@ -44,7 +60,8 @@
                 <div class="field"><label>Name</label><input name="name" required></div>
                 <div class="field"><label>Phone</label><input name="phone" required></div>
                 <div class="field"><label>Email</label><input type="email" name="email"></div>
-                <div class="field"><label>Preferred Date</label><input name="subject" type="date"></div>
+                <div class="field"><label>Preferred Date</label><input name="preferred_date" type="date"></div>
+                <div class="field"><label>Preferred Time</label><input name="preferred_time" type="time"></div>
                 <div class="field full"><label>Message</label><textarea name="message"></textarea></div>
                 <div class="field full"><button class="btn btn-orange" type="submit">Request Visit</button></div>
             </form>

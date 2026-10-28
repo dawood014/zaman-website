@@ -3,7 +3,7 @@
 @section('content')
 <section class="page-hero">
     <div class="container">
-        <div class="breadcrumbs"><a href="{{ route('home') }}">Home</a><span>›</span><a href="{{ route('projects') }}">Projects</a><span>›</span><span>{{ $item->title }}</span></div>
+        <div class="breadcrumbs"><a href="{{ route('home') }}">Home</a><span>›</span><a href="{{ route('projects.index') }}">Projects</a><span>›</span><span>{{ $item->title }}</span></div>
         <h1>{{ $item->title }}</h1>
         <p class="lead" style="color:#ddd;margin-top:15px">{{ $item->value('location') }} — {{ $item->value('summary') }}</p>
     </div>
@@ -23,7 +23,7 @@
                 </div>
                 <a class="btn btn-orange" href="{{ route('contact') }}?type=Project&reference={{ urlencode($item->title) }}">Enquire About Project</a>
                 @if($properties->isNotEmpty())
-                    <a class="btn btn-outline" style="margin-left:10px" href="{{ route('properties') }}?project={{ urlencode($item->title) }}">View Available Properties</a>
+                    <a class="btn btn-outline" style="margin-left:10px" href="{{ route('properties.index') }}?project={{ urlencode($item->title) }}">View Available Properties</a>
                 @endif
             </div>
         </div>

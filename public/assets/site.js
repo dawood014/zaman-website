@@ -84,4 +84,18 @@
     };
     document.body.appendChild(btn);
   }
+
+  document.querySelectorAll('[data-property-whatsapp]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const n = (settings.whatsapp || settings.phone || '').replace(/\D/g, '');
+      const title = el.dataset.title || 'Property';
+      const url = el.dataset.url || settings.siteUrl || '';
+      const ref = el.dataset.ref ? 'Ref: ' + el.dataset.ref + '\n' : '';
+      const price = el.dataset.price ? 'Price: ' + el.dataset.price + '\n' : '';
+      const txt = encodeURIComponent(
+        'Hello, I am interested in this property:\n' + title + '\n' + ref + price + url
+      );
+      window.open('https://wa.me/' + n + '?text=' + txt, '_blank');
+    });
+  });
 })();
