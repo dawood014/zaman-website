@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer(['layouts.app', 'layouts.public'], function ($view) {
-            $view->with('settings', Setting::pluck('value', 'key'));
+            $view->with('settings', Setting::pluck('value', 'key')->all());
             $view->with(
                 'social',
                 ContentItem::type('social')->published()->orderBy('sort_order')->get()

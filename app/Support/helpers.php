@@ -66,9 +66,16 @@ if (! function_exists('cms_page_url')) {
 }
 
 if (! function_exists('site_logo_url')) {
-    function site_logo_url(?array $settings = null): string
+    /**
+     * @param  array<string, mixed>|Illuminate\Support\Collection<string, mixed>|null  $settings
+     */
+    function site_logo_url(array|\Illuminate\Support\Collection|null $settings = null): string
     {
-        $path = $settings['site_logo'] ?? null;
+        if ($settings instanceof \Illuminate\Support\Collection) {
+            $settings = $settings->all();
+        }
+
+        $path = is_array($settings) ? ($settings['site_logo'] ?? null) : null;
         if ($path) {
             return cms_media($path, asset('assets/logo.png'));
         }
