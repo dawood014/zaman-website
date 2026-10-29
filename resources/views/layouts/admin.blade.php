@@ -15,7 +15,7 @@
 <div class="admin-layout">
     <aside class="sidebar" id="admin-sidebar">
         <div class="brand">
-            <img src="{{ asset('assets/logo.png') }}" alt="ZBT">
+            <img src="{{ site_logo_url(\App\Models\Setting::pluck('value', 'key')->all()) }}" alt="ZBT">
             <div>
                 <strong>Zaman Build Tech</strong>
                 <small>Website Admin</small>
@@ -26,7 +26,7 @@
 
             <div class="nav-group">Home Management</div>
             <a href="{{ route('admin.module.index', 'hero') }}" @class(['active' => $navActive('hero')])>Hero / Video Slider</a>
-            <a href="{{ route('admin.module.index', 'home-sections') }}" @class(['active' => $navActive('home-sections')])>Company Introduction</a>
+            <a href="{{ route('admin.module.index', 'home-sections') }}" @class(['active' => $navActive('home-sections')])>Who We Are</a>
             <a href="{{ route('admin.module.index', 'achievements') }}" @class(['active' => $navActive('achievements')])>Statistics</a>
             <a href="{{ route('admin.module.index', 'why-choose') }}" @class(['active' => $navActive('why-choose')])>Why Choose Us</a>
             <a href="{{ route('admin.module.index', 'process') }}" @class(['active' => $navActive('process')])>Construction Process</a>

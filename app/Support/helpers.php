@@ -25,3 +25,54 @@ if (! function_exists('whatsapp_digits')) {
         return preg_replace('/\D+/', '', (string) $number);
     }
 }
+
+if (! function_exists('valid_external_url')) {
+    /**
+     * Returns a safe external URL for href, or null if missing/invalid/placeholder.
+     */
+    function valid_external_url(?string $url): ?string
+    {
+        $url = trim((string) $url);
+        if ($url === '' || $url === '#' || $url === 'javascript:void(0)') {
+            return null;
+        }
+
+        if (! preg_match('#^https?://#i', $url)) {
+            return null;
+        }
+
+        return filter_var($url, FILTER_VALIDATE_URL) ? $url : null;
+    }
+}
+
+if (! function_exists('cms_page_url')) {
+    function cms_page_url(?string $link, ?string $default = null): string
+    {
+        $link = trim((string) $link);
+        if ($link === '') {
+            return $default ?? url('/');
+        }
+
+        if (preg_match('#^https?://#i', $link)) {
+            return filter_var($link, FILTER_VALIDATE_URL) ? $link : ($default ?? url('/'));
+        }
+
+        if (str_starts_with($link, '/')) {
+            return url($link);
+        }
+
+        return url('/'.$link);
+    }
+}
+
+if (! function_exists('site_logo_url')) {
+    function site_logo_url(?array $settings = null): string
+    {
+        $path = $settings['site_logo'] ?? null;
+        if ($path) {
+            return cms_media($path, asset('assets/logo.png'));
+        }
+
+        return asset('assets/logo.png');
+    }
+}

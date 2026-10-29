@@ -73,6 +73,7 @@ class CmsController extends Controller
         foreach ($cfg['fields'] as $field) {
             $type = $field['type'];
             $rules['f_'.$field['name']] = match (true) {
+                $module === 'social' && $field['name'] === 'url' => 'nullable|url|max:2000',
                 str_starts_with($type, 'image') => 'nullable|image|max:5120',
                 $type === 'file' => 'nullable|file|max:51200',
                 default => 'nullable',

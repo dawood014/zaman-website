@@ -19,7 +19,7 @@
     <div class="login-panel">
         <form class="login-box" method="post" action="{{ route('admin.login.post', absolute: false) }}">
             @csrf
-            <img src="{{ asset('assets/logo.png') }}" alt="Zaman Build Tech" onerror="this.style.display='none'">
+            <img src="{{ site_logo_url(\App\Models\Setting::pluck('value', 'key')->all()) }}" alt="Zaman Build Tech" onerror="this.style.display='none'">
             <h2>Admin Login</h2>
             <p>Sign in to manage the website.</p>
             @if($errors->any())

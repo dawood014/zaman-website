@@ -31,12 +31,12 @@
     <div class="container">
         <div class="two-col">
             <div>
-                <div class="eyebrow">Who We Are</div>
-                <h2 class="title-lg">A local construction and real estate company focused on practical delivery.</h2>
-                <p class="lead" style="margin-top:18px">Based on Warsak Road, Peshawar, Zaman Build Tech & Real Estate supports clients who want to build, renovate, buy a ready house or invest in residential plots.</p>
-                <a class="btn btn-orange" style="margin-top:22px" href="{{ route('about') }}">Learn About Us →</a>
+                <div class="eyebrow">{{ $whoWeAre?->value('eyebrow', 'Who We Are') }}</div>
+                <h2 class="title-lg">{{ $whoWeAre?->value('heading', 'A local construction and real estate company focused on practical delivery.') }}</h2>
+                <p class="lead" style="margin-top:18px">{{ $whoWeAre?->value('body', 'Based on Warsak Road, Peshawar, Zaman Build Tech & Real Estate supports clients who want to build, renovate, buy a ready house or invest in residential plots.') }}</p>
+                <a class="btn btn-orange" style="margin-top:22px" href="{{ cms_page_url($whoWeAre?->value('link'), route('about')) }}">{{ $whoWeAre?->value('button_text', 'Learn About Us →') }}</a>
             </div>
-            <div class="image-panel" style="background-image:url('https://media.zameen.com/thumbnails/199856624-800x600.jpeg')"></div>
+            <div class="image-panel" style="background-image:url('{{ cms_media($whoWeAre?->value('image')) }}')"></div>
         </div>
     </div>
 </section>

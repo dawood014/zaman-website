@@ -13,6 +13,10 @@
     </div>
 </div>
 
+@if($module === 'home-sections')
+    <p class="help" style="margin:0 0 16px">Edit the homepage <strong>Who We Are</strong> section (recommended slug: <code>who-we-are</code>).</p>
+@endif
+
 <div class="card">
     <div class="table-wrap">
         <table class="table">

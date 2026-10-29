@@ -3,16 +3,10 @@
     <div class="container">
         <div class="footer-grid">
             <div>
-                <img class="footer-logo" src="{{ asset('assets/logo.png') }}" alt="Zaman Build Tech & Real Estate" onerror="this.style.display='none'">
+                <img class="footer-logo" src="{{ site_logo_url($settings) }}" alt="{{ $settings['company'] ?? 'Zaman Build Tech & Real Estate' }}" onerror="this.style.display='none'">
                 <p>{{ $settings['footer_text'] ?? ($settings['company'] ?? 'Zaman Build Tech & Real Estate').' provides construction, renovation, ready-made houses and residential plots with cash and installment options in Peshawar.' }}</p>
                 <div class="socials">
-                    @forelse(($social ?? collect()) as $link)
-                        @if($link->value('url'))
-                            <a href="{{ $link->value('url') }}" target="_blank" rel="noopener" title="{{ $link->value('platform', $link->title) }}">{{ $link->value('icon', $link->value('platform', 'Link')) }}</a>
-                        @endif
-                    @empty
-                        <a href="#">f</a><a href="#">in</a><a href="#">▶</a><a href="#">◎</a>
-                    @endforelse
+                    @include('partials.social-links', ['social' => $social ?? collect()])
                 </div>
             </div>
             <div>

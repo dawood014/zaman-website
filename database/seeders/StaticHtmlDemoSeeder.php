@@ -88,10 +88,10 @@ class StaticHtmlDemoSeeder extends Seeder
         }
 
         $social = [
-            ['slug' => 'social-facebook', 'platform' => 'Facebook', 'url' => '#', 'icon' => 'f'],
-            ['slug' => 'social-linkedin', 'platform' => 'LinkedIn', 'url' => '#', 'icon' => 'in'],
-            ['slug' => 'social-youtube', 'platform' => 'YouTube', 'url' => '#', 'icon' => '▶'],
-            ['slug' => 'social-instagram', 'platform' => 'Instagram', 'url' => '#', 'icon' => '◎'],
+            ['slug' => 'social-facebook', 'platform' => 'Facebook', 'url' => '', 'icon' => 'f'],
+            ['slug' => 'social-linkedin', 'platform' => 'LinkedIn', 'url' => '', 'icon' => 'in'],
+            ['slug' => 'social-youtube', 'platform' => 'YouTube', 'url' => '', 'icon' => '▶'],
+            ['slug' => 'social-instagram', 'platform' => 'Instagram', 'url' => '', 'icon' => '◎'],
         ];
         foreach ($social as $i => $row) {
             ContentItem::updateOrCreate(['type' => 'social', 'slug' => $row['slug']], [

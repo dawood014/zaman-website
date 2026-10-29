@@ -16,6 +16,10 @@
 
 @if($module === 'achievements')
     <p class="help" style="margin:-8px 0 18px">Homepage statistics use <strong>Value</strong> and <strong>Label</strong>. Set status to <strong>Published</strong> (or Active) so they appear on the website.</p>
+@elseif($module === 'home-sections')
+    <p class="help" style="margin:-8px 0 18px">The homepage <strong>Who We Are</strong> block uses the item with slug <code>who-we-are</code> (or the first published item). Use <strong>Button URL</strong> for paths like <code>/about</code> or full links.</p>
+@elseif($module === 'social')
+    <p class="help" style="margin:-8px 0 18px">Enter the full profile URL (must start with <code>https://</code>). Icons only appear on the site when the URL is valid. Links open in a new tab.</p>
 @endif
 
 <div class="card">

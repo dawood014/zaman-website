@@ -8,7 +8,7 @@
 <header class="header">
     <div class="container nav">
         <a href="{{ route('home') }}">
-            <img class="logo" src="{{ asset('assets/logo.png') }}" alt="Zaman Build Tech & Real Estate" onerror="this.style.display='none'">
+            <img class="logo" src="{{ site_logo_url($settings ?? []) }}" alt="{{ $settings['company'] ?? 'Zaman Build Tech & Real Estate' }}" onerror="this.style.display='none'">
         </a>
         <button class="menu" aria-label="Open menu">☰</button>
         <ul class="navlinks">

@@ -6,7 +6,7 @@ class DashboardController extends Controller
     {
         $modules = [
             'hero' => 'Hero / Video Slider',
-            'home-sections' => 'Company Introduction',
+            'home-sections' => 'Who We Are',
             'services' => 'Services',
             'why-choose' => 'Why Choose Us',
             'process' => 'Construction Process',
